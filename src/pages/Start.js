@@ -3,11 +3,11 @@ import frontimage from "../static/images/poi-front-image.jpeg";
 
 const Start = () => {
   return (
-    <div class="Start columns is-vcentered ">
-      <div class="column has-text-centered">
-        <h> Sign up or Log in... </h>
+    <div className="Start columns is-vcentered ">
+      <div className="column has-text-centered">
+        <span> Sign up or Log in... </span>
       </div>
-      <div class="column">
+      <div className="column">
         <img src={frontimage} alt="frontimage" />
       </div>
     </div>
