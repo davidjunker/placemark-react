@@ -90,6 +90,15 @@ export const PlacemarkService = {
     }
   },
 
+  async getUser(id) {
+    try {
+      const res = await axios.get(baseUrl + "/api/users/" + id);
+      return res.data;
+    } catch (error) {
+      return null;
+    }
+  },
+
   async getUserCategories(id) {
     try {
       const res = await axios.get(baseUrl + "/api/users/" + id + "/categories");

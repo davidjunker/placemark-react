@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { PlacemarkService } from "../utils/placemark-service";
 import ListUsers from "../components/molecules/ListUsers";
+import AdminCharts from "../components/organisms/AdminCharts";
 
 const AdminDashboard = ({ userid }) => {
   const [permission, setPermission] = useState(false);
@@ -37,9 +38,9 @@ const AdminDashboard = ({ userid }) => {
           <h1 className="title">User List</h1>
           <ListUsers users={data.users} triggerReload={reload} />
         </section>
-        <section class="section">
-          <h1 class="title">Analytics</h1>
-          <table class="table is-fullwidth">
+        <section className="section">
+          <h1 className="title">Analytics</h1>
+          <table className="table is-fullwidth">
             <thead>
               <tr>
                 <th>Stat</th>
@@ -81,6 +82,10 @@ const AdminDashboard = ({ userid }) => {
               </tr>
             </tbody>
           </table>
+        </section>
+        <section className="section">
+          <h1 className="title">Charts</h1>
+          <AdminCharts data={data} />
         </section>
       </section>
     ) : (

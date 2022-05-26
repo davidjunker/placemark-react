@@ -11,6 +11,7 @@ import Category from "./pages/Category";
 import Poi from "./pages/Poi";
 import Account from "./pages/Account";
 import AdminDashboard from "./pages/AdminDashboard";
+import User from "./pages/User";
 
 const App = () => {
   const [userid, setUserid] = useState("");
@@ -84,6 +85,9 @@ const App = () => {
         </Route>
         <Route path="/admin-dashboard">
           <AdminDashboard userid={userid} />
+        </Route>
+        <Route path="/user/:id">
+          <User adminid={userid} />
         </Route>
       </Switch>
     </div>
