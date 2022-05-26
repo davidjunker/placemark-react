@@ -17,8 +17,10 @@ export const PlacemarkService = {
         "Bearer " + response.data.token;
       if (response.data.success) {
         console.log(response.data);
-        localStorage.setItem("token", JSON.stringify(response.data.token));
+        // localStorage.setItem("token", JSON.stringify(response.data.token));
         localStorage.setItem("userid", JSON.stringify(response.data.userid));
+        localStorage.setItem("email", JSON.stringify(email));
+        localStorage.setItem("password", JSON.stringify(password));
         return true;
       }
       return false;
@@ -29,8 +31,10 @@ export const PlacemarkService = {
 
   async logout() {
     axios.defaults.headers.common["Authorization"] = "";
-    localStorage.removeItem("token");
+    // localStorage.removeItem("token");
     localStorage.removeItem("userid");
+    localStorage.removeItem("email");
+    localStorage.removeItem("password");
   },
 
   async signup(firstName, lastName, email, password) {
@@ -45,6 +49,141 @@ export const PlacemarkService = {
       return true;
     } catch (error) {
       return false;
+    }
+  },
+
+  async updateUser(firstName, lastName, email, password, userid) {
+    try {
+      const userDetails = {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+      };
+      await axios.put(baseUrl + "/api/users/" + userid, userDetails);
+      localStorage.setItem("email", JSON.stringify(email));
+      localStorage.setItem("password", JSON.stringify(password));
+      return true;
+    } catch (error) {
+      return false;
+    }
+  },
+
+  async deleteUser(userid) {
+    try {
+      await axios.delete(baseUrl + "/api/users/" + userid);
+      localStorage.removeItem("userid");
+      localStorage.removeItem("email");
+      localStorage.removeItem("password");
+      return true;
+    } catch (error) {
+      return false;
+    }
+  },
+
+  async adminDeleteUser(userid) {
+    try {
+      await axios.delete(baseUrl + "/api/users/" + userid);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  },
+
+  async getUserCategories(id) {
+    try {
+      const res = await axios.get(baseUrl + "/api/users/" + id + "/categories");
+      if (res.data.length <= 0) {
+        return null;
+      }
+      return res.data;
+    } catch (error) {
+      return null;
+    }
+  },
+
+  async createCategory(category) {
+    try {
+      const res = await axios.post(baseUrl + "/api/categories", category);
+      return res.data;
+    } catch (error) {
+      return null;
+    }
+  },
+
+  async getCategory(id) {
+    try {
+      const res = await axios.get(baseUrl + "/api/categories/" + id);
+      if (res === null) {
+        return null;
+      }
+      return res.data;
+    } catch (error) {
+      return null;
+    }
+  },
+
+  async deleteCategory(id) {
+    try {
+      await axios.delete(baseUrl + "/api/categories/" + id);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  },
+
+  async getPoi(id) {
+    try {
+      const res = await axios.get(baseUrl + "/api/pois/" + id);
+      if (res === null) {
+        return null;
+      }
+      return res.data;
+    } catch (error) {
+      return null;
+    }
+  },
+
+  async createPoi(id, poi) {
+    try {
+      const res = await axios.post(
+        baseUrl + "/api/categories/" + id + "/pois",
+        poi
+      );
+      return res.data;
+    } catch (error) {
+      return null;
+    }
+  },
+
+  async deletePoi(id) {
+    try {
+      await axios.delete(baseUrl + "/api/pois/" + id);
+      return true;
+    } catch (error) {
+      return false;
+    }
+  },
+
+  async uploadImage(id, formData) {
+    try {
+      axios.post(baseUrl + "/api/pois/" + id + "/images", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      return true;
+    } catch (error) {
+      return false;
+    }
+  },
+
+  async getAnalytics(id) {
+    try {
+      const res = await axios.get(baseUrl + "/api/admin/" + id + "/analytics");
+      return res.data;
+    } catch (error) {
+      return null;
     }
   },
 };

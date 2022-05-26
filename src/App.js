@@ -7,6 +7,10 @@ import Start from "./pages/Start";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import Category from "./pages/Category";
+import Poi from "./pages/Poi";
+import Account from "./pages/Account";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const App = () => {
   const [userid, setUserid] = useState("");
@@ -14,23 +18,38 @@ const App = () => {
 
   useEffect(() => {
     const tempUserid = JSON.parse(localStorage.getItem("userid"));
-    const token = JSON.parse(localStorage.getItem("token"));
+    // const token = JSON.parse(localStorage.getItem("token"));
+    const email = JSON.parse(localStorage.getItem("email"));
+    const password = JSON.parse(localStorage.getItem("password"));
 
     if (
       tempUserid !== "" &&
       tempUserid !== null &&
-      token !== "" &&
-      token !== null
+      email !== "" &&
+      email !== null &&
+      password !== "" &&
+      password !== null
+      // token !== "" &&
+      // token !== null
     ) {
-      PlacemarkService.authenticate(token);
-      setUserid(tempUserid);
-      setLoggedIn(true);
+      // PlacemarkService.login(email, password);
+      // setUserid(tempUserid);
+      // setLoggedIn(true);
+      logUserIn(email, password, tempUserid);
     }
   }, []);
 
-  const loginUser = (tempUserid) => {
+  const logUserIn = async (email, password, tempUserid) => {
+    await PlacemarkService.login(email, password);
     setUserid(tempUserid);
     setLoggedIn(true);
+  };
+
+  const loginUser = (tempUserid) => {
+    if (tempUserid !== null && tempUserid !== "") {
+      setUserid(tempUserid);
+      setLoggedIn(true);
+    }
   };
 
   const logoutUser = () => {
@@ -43,7 +62,7 @@ const App = () => {
       <Navigation loggedIn={loggedIn} logoutUser={logoutUser} />
       <Switch>
         <Route exact path="/">
-          {loggedIn ? <Dashboard /> : <Start />}
+          {loggedIn ? <Dashboard userid={userid} /> : <Start />}
         </Route>
         <Route path="/signup">
           <Signup />
@@ -52,7 +71,19 @@ const App = () => {
           <Login loginUser={loginUser} />
         </Route>
         <Route path="/dashboard">
-          <Dashboard />
+          <Dashboard userid={userid} />
+        </Route>
+        <Route path="/category/:id">
+          <Category />
+        </Route>
+        <Route path="/poi/:id">
+          <Poi />
+        </Route>
+        <Route path="/account">
+          <Account userid={userid} logoutUser={logoutUser} />
+        </Route>
+        <Route path="/admin-dashboard">
+          <AdminDashboard userid={userid} />
         </Route>
       </Switch>
     </div>
