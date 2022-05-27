@@ -17,7 +17,6 @@ export const PlacemarkService = {
         "Bearer " + response.data.token;
       if (response.data.success) {
         console.log(response.data);
-        // localStorage.setItem("token", JSON.stringify(response.data.token));
         localStorage.setItem("userid", JSON.stringify(response.data.userid));
         localStorage.setItem("email", JSON.stringify(email));
         localStorage.setItem("password", JSON.stringify(password));
@@ -31,7 +30,6 @@ export const PlacemarkService = {
 
   async logout() {
     axios.defaults.headers.common["Authorization"] = "";
-    // localStorage.removeItem("token");
     localStorage.removeItem("userid");
     localStorage.removeItem("email");
     localStorage.removeItem("password");
