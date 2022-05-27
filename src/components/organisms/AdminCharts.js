@@ -2,7 +2,6 @@ import React from "react";
 import ReactFrappeChart from "react-frappe-charts";
 
 const AdminCharts = ({ data }) => {
-  // labels: ["Users", "Categories", "Pois", "Images"]
   const assetChartData = {
     labels: ["Users", "Categories", "Pois", "Images"],
     datasets: [
