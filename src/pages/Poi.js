@@ -32,7 +32,10 @@ const Poi = () => {
           // setImages(currPoi.images);
           let currImages = [];
           currPoi.images.map((image) =>
-            currImages.push({ original: image.img, thumbnail: image.img })
+            currImages.push({
+              original: image.img.slice(0, 3) + "s" + image.img.slice(3),
+              thumbnail: image.img.slice(0, 3) + "s" + image.img.slice(3),
+            })
           );
           setImages(currImages);
         }
@@ -44,7 +47,10 @@ const Poi = () => {
 
   const reloadData = async (result) => {
     const currPoi = images.slice();
-    currPoi.push({ original: result.img, thumbnail: result.img });
+    currPoi.push({
+      original: result.img.slice(0, 3) + "s" + result.img.slice(3),
+      thumbnail: result.img.slice(0, 3) + "s" + result.img.slice(3),
+    });
     setImages(currPoi);
   };
 
