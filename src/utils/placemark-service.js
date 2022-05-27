@@ -174,11 +174,24 @@ export const PlacemarkService = {
 
   async uploadImage(id, formData) {
     try {
-      axios.post(baseUrl + "/api/pois/" + id + "/images", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const res = await axios.post(
+        baseUrl + "/api/pois/" + id + "/images",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      return res.data;
+    } catch (error) {
+      return false;
+    }
+  },
+
+  async deleteImage(id) {
+    try {
+      await axios.delete(baseUrl + "/api/images/" + id);
       return true;
     } catch (error) {
       return false;

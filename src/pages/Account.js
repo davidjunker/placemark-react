@@ -127,11 +127,11 @@ const Account = ({ userid, logoutUser }) => {
           {passwordError ? <div>Please enter a password</div> : null}
         </div>
       </section>
-      <section class="section">
-        <h2 class="title">Delete your account</h2>
-        <button onClick={() => deleteUser()} class="button is-danger">
-          <span class="icon-is-small">
-            <i class="fas fa-trash"></i>
+      <section className="section">
+        <h2 className="title">Delete your account</h2>
+        <button className={() => deleteUser()} class="button is-danger">
+          <span className="icon-is-small">
+            <i className="fas fa-trash"></i>
           </span>
         </button>
       </section>

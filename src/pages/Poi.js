@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
+import ImageGallery from "react-image-gallery";
 import { PlacemarkService } from "../utils/placemark-service";
 import UploadImage from "../components/molecules/UploadImage";
 import {
@@ -14,21 +15,56 @@ import "leaflet/dist/leaflet.css";
 import "../utils/map.css";
 import markerIconPng from "leaflet/dist/images/marker-icon.png";
 import { Icon } from "leaflet";
+import "react-image-gallery/styles/css/image-gallery.css";
 
 const Poi = () => {
   const [poi, setPoi] = useState(null);
+  const [images, setImages] = useState([]);
   let { id } = useParams();
+  const imgRef = useRef(null);
 
   useEffect(() => {
     const getCategory = async () => {
       if (id !== null) {
         const currPoi = await PlacemarkService.getPoi(id);
         setPoi(currPoi);
+        if (currPoi.images !== null) {
+          // setImages(currPoi.images);
+          let currImages = [];
+          currPoi.images.map((image) =>
+            currImages.push({ original: image.img, thumbnail: image.img })
+          );
+          setImages(currImages);
+        }
       }
     };
 
     getCategory();
   }, [id]);
+
+  const reloadData = async (result) => {
+    const currPoi = images.slice();
+    currPoi.push({ original: result.img, thumbnail: result.img });
+    setImages(currPoi);
+  };
+
+  const deleteImage = async () => {
+    const index = imgRef.current.getCurrentIndex();
+    let currImageId = null;
+    poi.images.forEach((image) => {
+      if (image.img === images[index].original) {
+        currImageId = image._id;
+      }
+    });
+
+    if (currImageId !== null) {
+      await PlacemarkService.deleteImage(currImageId);
+      let currGalleryImages = images.slice();
+      currGalleryImages.splice(index, 1);
+      setImages(currGalleryImages);
+    }
+  };
+
   return (
     <section>
       <section className="section columns is-vcentered">
@@ -39,7 +75,7 @@ const Poi = () => {
           <div>Longitude: {poi ? poi.longitude : "Loading..."}</div>
         </div>
         <div className="column">
-          <UploadImage poiid={poi ? poi._id : null} />
+          <UploadImage poiid={poi ? poi._id : null} reloadData={reloadData} />
         </div>
       </section>
       <section className="section">
@@ -83,6 +119,24 @@ const Poi = () => {
               </LayersControl.Overlay>
             </LayersControl>
           </MapContainer>
+        ) : null}
+      </section>
+      <section className="section has-text-centered">
+        {images.length > 0 ? (
+          <>
+            <h2 className="title">Image Gallery</h2>
+            <ImageGallery
+              items={images}
+              showPlayButton={false}
+              showFullscreenButton={false}
+              ref={imgRef}
+            />
+            <button onClick={() => deleteImage()} className="button is-danger">
+              <span className="icon-is-small">
+                <i className="fas fa-trash"></i>
+              </span>
+            </button>
+          </>
         ) : null}
       </section>
     </section>
