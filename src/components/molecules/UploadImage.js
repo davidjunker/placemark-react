@@ -1,7 +1,7 @@
 import React from "react";
 import { PlacemarkService } from "../../utils/placemark-service";
 
-const UploadImage = ({ poiid }) => {
+const UploadImage = ({ poiid, reloadData }) => {
   const updateFile = () => {
     const fileInput = document.querySelector(".file-input");
     if (fileInput.files.length > 0) {
@@ -16,7 +16,10 @@ const UploadImage = ({ poiid }) => {
     let imagefile = document.querySelector("#file");
     formData.append("imagefile", imagefile.files[0]);
 
-    await PlacemarkService.uploadImage(poiid, formData);
+    const result = await PlacemarkService.uploadImage(poiid, formData);
+    const fileName = document.querySelector(".file-name");
+    fileName.textContent = "";
+    reloadData(result);
   };
   return (
     <div className="card">

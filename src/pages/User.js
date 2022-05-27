@@ -70,7 +70,7 @@ const User = ({ adminid }) => {
   return user !== null ? (
     <section>
       <section className="section">
-        <table class="table is-fullwidth">
+        <table className="table is-fullwidth">
           <thead>
             <tr>
               <th>First Name</th>
